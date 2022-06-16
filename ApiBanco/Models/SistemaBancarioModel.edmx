@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SistemaBancarioDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="direccion" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="correo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="cedula" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="numeroCuenta" Type="int" Nullable="false" />
+          <Property Name="FechaInicio" Type="datetime" Nullable="false" />
+          <Property Name="TasaInteres" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="saldoDisponible" Type="decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="moneda" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClienteCuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="clienteId" Type="int" Nullable="false" />
+          <Property Name="cuentaId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaDeposito" Type="datetime" Nullable="false" />
+          <Property Name="saldoDepositado" Type="decimal" Precision="9" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="ClienteCuenta" Type="Self.ClienteCuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ClienteCuenta">
+              <PropertyRef Name="clienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Cuenta">
+          <End Role="Cuenta" Type="Self.Cuenta" Multiplicity="1" />
+          <End Role="ClienteCuenta" Type="Self.ClienteCuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ClienteCuenta">
+              <PropertyRef Name="cuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SistemaBancarioDBModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClienteCuenta" EntityType="Self.ClienteCuenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cuenta" EntityType="Self.Cuenta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_Cliente" Association="Self.fk_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="ClienteCuenta" EntitySet="ClienteCuenta" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Cuenta" Association="Self.fk_Cuenta">
+            <End Role="Cuenta" EntitySet="Cuenta" />
+            <End Role="ClienteCuenta" EntitySet="ClienteCuenta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SistemaBancarioDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cedula" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="numeroCuenta" Type="Int32" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TasaInteres" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="saldoDisponible" Type="Decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="moneda" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ClienteCuentas" Relationship="Self.fk_Cliente" FromRole="Cliente" ToRole="ClienteCuenta" />
+        </EntityType>
+        <EntityType Name="ClienteCuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="clienteId" Type="Int32" Nullable="false" />
+          <Property Name="cuentaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.fk_Cliente" FromRole="ClienteCuenta" ToRole="Cliente" />
+          <NavigationProperty Name="Cuenta" Relationship="Self.fk_Cuenta" FromRole="ClienteCuenta" ToRole="Cuenta" />
+        </EntityType>
+        <EntityType Name="Cuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaDeposito" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="saldoDepositado" Type="Decimal" Precision="9" Scale="2" Nullable="false" />
+          <NavigationProperty Name="ClienteCuentas" Relationship="Self.fk_Cuenta" FromRole="Cuenta" ToRole="ClienteCuenta" />
+        </EntityType>
+        <Association Name="fk_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="ClienteCuenta" Type="Self.ClienteCuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ClienteCuenta">
+              <PropertyRef Name="clienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Cuenta">
+          <End Role="Cuenta" Type="Self.Cuenta" Multiplicity="1" />
+          <End Role="ClienteCuenta" Type="Self.ClienteCuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ClienteCuenta">
+              <PropertyRef Name="cuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SistemaBancarioDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="ClienteCuentas" EntityType="Self.ClienteCuenta" />
+          <EntitySet Name="Cuentas" EntityType="Self.Cuenta" />
+          <AssociationSet Name="fk_Cliente" Association="Self.fk_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="ClienteCuenta" EntitySet="ClienteCuentas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Cuenta" Association="Self.fk_Cuenta">
+            <End Role="Cuenta" EntitySet="Cuentas" />
+            <End Role="ClienteCuenta" EntitySet="ClienteCuentas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SistemaBancarioDBModelStoreContainer" CdmEntityContainer="SistemaBancarioDBEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="SistemaBancarioDBModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="numeroCuenta" ColumnName="numeroCuenta" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="TasaInteres" ColumnName="TasaInteres" />
+                <ScalarProperty Name="saldoDisponible" ColumnName="saldoDisponible" />
+                <ScalarProperty Name="moneda" ColumnName="moneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClienteCuentas">
+            <EntityTypeMapping TypeName="SistemaBancarioDBModel.ClienteCuenta">
+              <MappingFragment StoreEntitySet="ClienteCuenta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="clienteId" ColumnName="clienteId" />
+                <ScalarProperty Name="cuentaId" ColumnName="cuentaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cuentas">
+            <EntityTypeMapping TypeName="SistemaBancarioDBModel.Cuenta">
+              <MappingFragment StoreEntitySet="Cuenta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="FechaDeposito" ColumnName="FechaDeposito" />
+                <ScalarProperty Name="saldoDepositado" ColumnName="saldoDepositado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
